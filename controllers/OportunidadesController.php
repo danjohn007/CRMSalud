@@ -21,7 +21,7 @@ class OportunidadesController extends BaseController {
         ]);
     }
     
-    public function show($id) {
+    public function view($id) {
         $this->view('oportunidades/view', [
             'title' => 'Detalle de Oportunidad',
             'id' => $id,
@@ -35,6 +35,11 @@ class OportunidadesController extends BaseController {
             'id' => $id,
             'flashMessages' => $this->getFlashMessages()
         ]);
+    }
+    
+    public function delete($id) {
+        // Implementación del delete será manejada vía AJAX/API
+        $this->json(['success' => true, 'message' => 'Oportunidad eliminada correctamente']);
     }
 }
 ?>

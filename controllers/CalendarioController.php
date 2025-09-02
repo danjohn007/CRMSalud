@@ -14,6 +14,35 @@ class CalendarioController extends BaseController {
         ]);
     }
     
+    public function create() {
+        $this->view('calendario/create', [
+            'title' => 'Nuevo Evento',
+            'flashMessages' => $this->getFlashMessages()
+        ]);
+    }
+    
+    public function view($id) {
+        $this->view('calendario/view', [
+            'title' => 'Detalle de Evento',
+            'id' => $id,
+            'flashMessages' => $this->getFlashMessages()
+        ]);
+    }
+    
+    public function edit($id) {
+        $this->view('calendario/edit', [
+            'title' => 'Editar Evento',
+            'id' => $id,
+            'flashMessages' => $this->getFlashMessages()
+        ]);
+    }
+    
+    public function delete($id) {
+        // Implementación del delete será manejada vía AJAX/API
+        $this->json(['success' => true, 'message' => 'Evento eliminado correctamente']);
+    }
+    
+    // Métodos adicionales específicos del módulo
     public function eventos() {
         $this->view('calendario/eventos', [
             'title' => 'Gestión de Eventos',

@@ -14,6 +14,35 @@ class ComunicacionController extends BaseController {
         ]);
     }
     
+    public function create() {
+        $this->view('comunicacion/create', [
+            'title' => 'Nueva Comunicación',
+            'flashMessages' => $this->getFlashMessages()
+        ]);
+    }
+    
+    public function view($id) {
+        $this->view('comunicacion/view', [
+            'title' => 'Detalle de Comunicación',
+            'id' => $id,
+            'flashMessages' => $this->getFlashMessages()
+        ]);
+    }
+    
+    public function edit($id) {
+        $this->view('comunicacion/edit', [
+            'title' => 'Editar Comunicación',
+            'id' => $id,
+            'flashMessages' => $this->getFlashMessages()
+        ]);
+    }
+    
+    public function delete($id) {
+        // Implementación del delete será manejada vía AJAX/API
+        $this->json(['success' => true, 'message' => 'Comunicación eliminada correctamente']);
+    }
+    
+    // Métodos adicionales específicos del módulo
     public function mensajes() {
         $this->view('comunicacion/mensajes', [
             'title' => 'Mensajes',

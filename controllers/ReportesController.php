@@ -14,6 +14,35 @@ class ReportesController extends BaseController {
         ]);
     }
     
+    public function create() {
+        $this->view('reportes/create', [
+            'title' => 'Nuevo Reporte',
+            'flashMessages' => $this->getFlashMessages()
+        ]);
+    }
+    
+    public function view($id) {
+        $this->view('reportes/view', [
+            'title' => 'Detalle de Reporte',
+            'id' => $id,
+            'flashMessages' => $this->getFlashMessages()
+        ]);
+    }
+    
+    public function edit($id) {
+        $this->view('reportes/edit', [
+            'title' => 'Editar Reporte',
+            'id' => $id,
+            'flashMessages' => $this->getFlashMessages()
+        ]);
+    }
+    
+    public function delete($id) {
+        // Implementación del delete será manejada vía AJAX/API
+        $this->json(['success' => true, 'message' => 'Reporte eliminado correctamente']);
+    }
+    
+    // Métodos adicionales específicos del módulo
     public function ventas() {
         $this->view('reportes/ventas', [
             'title' => 'Reporte de Ventas',

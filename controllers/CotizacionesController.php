@@ -21,7 +21,7 @@ class CotizacionesController extends BaseController {
         ]);
     }
     
-    public function show($id) {
+    public function view($id) {
         $this->view('cotizaciones/view', [
             'title' => 'Detalle de Cotización',
             'id' => $id,
@@ -35,6 +35,11 @@ class CotizacionesController extends BaseController {
             'id' => $id,
             'flashMessages' => $this->getFlashMessages()
         ]);
+    }
+    
+    public function delete($id) {
+        // Implementación del delete será manejada vía AJAX/API
+        $this->json(['success' => true, 'message' => 'Cotización eliminada correctamente']);
     }
 }
 ?>

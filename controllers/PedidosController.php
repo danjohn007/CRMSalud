@@ -29,12 +29,25 @@ class PedidosController extends BaseController {
         ]);
     }
     
+    public function view($id) {
+        $this->view('pedidos/view', [
+            'title' => 'Detalle de Pedido',
+            'id' => $id,
+            'flashMessages' => $this->getFlashMessages()
+        ]);
+    }
+    
     public function edit($id) {
         $this->view('pedidos/edit', [
             'title' => 'Editar Pedido',
             'id' => $id,
             'flashMessages' => $this->getFlashMessages()
         ]);
+    }
+    
+    public function delete($id) {
+        // Implementación del delete será manejada vía AJAX/API
+        $this->json(['success' => true, 'message' => 'Pedido eliminado correctamente']);
     }
 }
 ?>

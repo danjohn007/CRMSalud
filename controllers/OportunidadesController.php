@@ -21,7 +21,7 @@ class OportunidadesController extends BaseController {
         ]);
     }
     
-    public function view($id) {
+    public function show($id) {
         $this->view('oportunidades/view', [
             'title' => 'Detalle de Oportunidad',
             'id' => $id,

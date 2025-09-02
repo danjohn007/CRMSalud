@@ -21,7 +21,7 @@ class MarketingController extends BaseController {
         ]);
     }
     
-    public function view($id) {
+    public function show($id) {
         $this->view('marketing/view', [
             'title' => 'Detalle de Campaña',
             'id' => $id,

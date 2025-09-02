@@ -3,7 +3,7 @@
         <i class="bi bi-pencil"></i> <?php echo $title; ?>
     </h1>
     <div class="btn-toolbar mb-2 mb-md-0">
-        <a href="<?php echo $baseUrl; ?>pedidos/view/<?php echo $id; ?>" class="btn btn-sm btn-outline-secondary">
+        <a href="<?php echo $baseUrl; ?>pedidos/show/<?php echo $id; ?>" class="btn btn-sm btn-outline-secondary">
             <i class="bi bi-arrow-left"></i> Volver
         </a>
     </div>
@@ -84,7 +84,7 @@
                         <button type="submit" class="btn btn-primary">
                             <i class="bi bi-check"></i> Actualizar Pedido
                         </button>
-                        <a href="<?php echo $baseUrl; ?>pedidos/view/<?php echo $id; ?>" class="btn btn-secondary">
+                        <a href="<?php echo $baseUrl; ?>pedidos/show/<?php echo $id; ?>" class="btn btn-secondary">
                             <i class="bi bi-x"></i> Cancelar
                         </a>
                     </div>

@@ -21,7 +21,7 @@ class ReportesController extends BaseController {
         ]);
     }
     
-    public function view($id) {
+    public function show($id) {
         $this->view('reportes/view', [
             'title' => 'Detalle de Reporte',
             'id' => $id,

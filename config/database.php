@@ -16,7 +16,9 @@ class Database {
                 PDO::ATTR_EMULATE_PREPARES => false
             ]);
         } catch (PDOException $e) {
-            die("Error de conexión a la base de datos: " . $e->getMessage());
+            // En lugar de morir, marcar como no conectado para el test
+            error_log("Error de conexión a la base de datos: " . $e->getMessage());
+            $this->connection = null;
         }
     }
     
@@ -82,6 +84,9 @@ class Database {
     
     public function testConnection() {
         try {
+            if ($this->connection === null) {
+                return false;
+            }
             $this->connection->query('SELECT 1');
             return true;
         } catch (PDOException $e) {

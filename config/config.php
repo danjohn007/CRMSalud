@@ -36,9 +36,11 @@ define('DB_USER', 'root');
 define('DB_PASS', '');
 define('DB_CHARSET', 'utf8mb4');
 
-// Configuración de sesiones
-ini_set('session.cookie_lifetime', 3600 * 8); // 8 horas
-ini_set('session.gc_maxlifetime', 3600 * 8);
+// Configuración de sesiones (solo si no hay sesión activa)
+if (session_status() === PHP_SESSION_NONE) {
+    ini_set('session.cookie_lifetime', 3600 * 8); // 8 horas
+    ini_set('session.gc_maxlifetime', 3600 * 8);
+}
 
 // Configuración de uploads
 define('MAX_UPLOAD_SIZE', 5 * 1024 * 1024); // 5MB

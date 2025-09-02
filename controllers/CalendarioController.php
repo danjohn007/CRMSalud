@@ -21,7 +21,7 @@ class CalendarioController extends BaseController {
         ]);
     }
     
-    public function view($id) {
+    public function show($id) {
         $this->view('calendario/view', [
             'title' => 'Detalle de Evento',
             'id' => $id,

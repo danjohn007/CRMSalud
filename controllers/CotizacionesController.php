@@ -21,7 +21,7 @@ class CotizacionesController extends BaseController {
         ]);
     }
     
-    public function view($id) {
+    public function show($id) {
         $this->view('cotizaciones/view', [
             'title' => 'Detalle de Cotización',
             'id' => $id,

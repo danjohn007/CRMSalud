@@ -29,14 +29,6 @@ class PedidosController extends BaseController {
         ]);
     }
     
-    public function view($id) {
-        $this->view('pedidos/view', [
-            'title' => 'Detalle de Pedido',
-            'id' => $id,
-            'flashMessages' => $this->getFlashMessages()
-        ]);
-    }
-    
     public function edit($id) {
         $this->view('pedidos/edit', [
             'title' => 'Editar Pedido',

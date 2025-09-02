@@ -21,7 +21,7 @@ class ComunicacionController extends BaseController {
         ]);
     }
     
-    public function view($id) {
+    public function show($id) {
         $this->view('comunicacion/view', [
             'title' => 'Detalle de Comunicación',
             'id' => $id,

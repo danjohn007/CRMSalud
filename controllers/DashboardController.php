@@ -39,8 +39,8 @@ class DashboardController extends BaseController {
         // Ventas del mes
         $stats['ventas_mes'] = $this->db->fetchOne(
             "SELECT COALESCE(SUM(total), 0) as total FROM pedidos 
-             WHERE MONTH(fecha_creacion) = MONTH(CURRENT_DATE()) 
-             AND YEAR(fecha_creacion) = YEAR(CURRENT_DATE())
+             WHERE MONTH(created_at) = MONTH(CURRENT_DATE()) 
+             AND YEAR(created_at) = YEAR(CURRENT_DATE())
              AND estado != 'cancelado'"
         )['total'] ?? 0;
         

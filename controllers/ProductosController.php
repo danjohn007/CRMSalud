@@ -88,7 +88,7 @@ class ProductosController extends BaseController {
                 try {
                     $productoId = $this->productoModel->create($data);
                     $this->flash('success', 'Producto registrado exitosamente');
-                    $this->redirect('productos/view/' . $productoId);
+                    $this->redirect('productos/show/' . $productoId);
                 } catch (Exception $e) {
                     $this->flash('error', 'Error al registrar producto: ' . $e->getMessage());
                 }
@@ -110,7 +110,7 @@ class ProductosController extends BaseController {
         ]);
     }
     
-    public function view($id) {
+    public function show($id) {
         $producto = $this->productoModel->find($id);
         
         if (!$producto) {
@@ -145,7 +145,7 @@ class ProductosController extends BaseController {
                 try {
                     $this->productoModel->update($id, $data);
                     $this->flash('success', 'Producto actualizado exitosamente');
-                    $this->redirect('productos/view/' . $id);
+                    $this->redirect('productos/show/' . $id);
                 } catch (Exception $e) {
                     $this->flash('error', 'Error al actualizar producto: ' . $e->getMessage());
                 }

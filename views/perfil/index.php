@@ -9,6 +9,14 @@
                 <h5 class="card-title mb-0">Información Personal</h5>
             </div>
             <div class="card-body">
+                <?php if (!empty($currentUser['profile_image']) && file_exists($currentUser['profile_image'])): ?>
+                <div class="text-center mb-4">
+                    <img src="<?php echo $baseUrl . $currentUser['profile_image']; ?>" 
+                         alt="Imagen de perfil" class="rounded-circle" 
+                         style="width: 120px; height: 120px; object-fit: cover;">
+                </div>
+                <?php endif; ?>
+                
                 <div class="row mb-3">
                     <div class="col-sm-3">
                         <strong>Nombre:</strong>
@@ -25,6 +33,26 @@
                         <?php echo htmlspecialchars($currentUser['email']); ?>
                     </div>
                 </div>
+                <?php if (!empty($currentUser['telefono'])): ?>
+                <div class="row mb-3">
+                    <div class="col-sm-3">
+                        <strong>Teléfono:</strong>
+                    </div>
+                    <div class="col-sm-9">
+                        <?php echo htmlspecialchars($currentUser['telefono']); ?>
+                    </div>
+                </div>
+                <?php endif; ?>
+                <?php if (!empty($currentUser['direccion'])): ?>
+                <div class="row mb-3">
+                    <div class="col-sm-3">
+                        <strong>Dirección:</strong>
+                    </div>
+                    <div class="col-sm-9">
+                        <?php echo nl2br(htmlspecialchars($currentUser['direccion'])); ?>
+                    </div>
+                </div>
+                <?php endif; ?>
                 <div class="row mb-3">
                     <div class="col-sm-3">
                         <strong>Rol:</strong>

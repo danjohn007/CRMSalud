@@ -60,7 +60,7 @@ class ClientesController extends BaseController {
                 try {
                     $clienteId = $this->clienteModel->create($data);
                     $this->flash('success', 'Cliente registrado exitosamente');
-                    $this->redirect('clientes/view/' . $clienteId);
+                    $this->redirect('clientes/show/' . $clienteId);
                 } catch (Exception $e) {
                     $this->flash('error', 'Error al registrar cliente: ' . $e->getMessage());
                 }
@@ -78,7 +78,7 @@ class ClientesController extends BaseController {
         ]);
     }
     
-    public function view($id) {
+    public function show($id) {
         $cliente = $this->clienteModel->find($id);
         
         if (!$cliente) {
@@ -111,7 +111,7 @@ class ClientesController extends BaseController {
                 try {
                     $this->clienteModel->update($id, $data);
                     $this->flash('success', 'Cliente actualizado exitosamente');
-                    $this->redirect('clientes/view/' . $id);
+                    $this->redirect('clientes/show/' . $id);
                 } catch (Exception $e) {
                     $this->flash('error', 'Error al actualizar cliente: ' . $e->getMessage());
                 }

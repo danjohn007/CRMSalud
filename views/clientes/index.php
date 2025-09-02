@@ -225,7 +225,7 @@
                         </td>
                         <td>
                             <div class="btn-group" role="group">
-                                <a href="<?php echo $baseUrl; ?>clientes/view/<?php echo $cliente['id']; ?>" 
+                                <a href="<?php echo $baseUrl; ?>clientes/show/<?php echo $cliente['id']; ?>" 
                                    class="btn btn-sm btn-outline-primary" data-bs-toggle="tooltip" title="Ver">
                                     <i class="bi bi-eye"></i>
                                 </a>

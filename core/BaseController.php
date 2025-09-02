@@ -49,7 +49,7 @@ class BaseController {
         return $userRoleIndex !== false && $requiredRoleIndex !== false && $userRoleIndex <= $requiredRoleIndex;
     }
     
-    protected function view($view, $data = []) {
+    public function view($view, $data = []) {
         extract($data);
         
         // Variables globales para las vistas

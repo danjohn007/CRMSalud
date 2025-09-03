@@ -223,6 +223,160 @@ class ProductosController extends BaseController {
         return $validatedData;
     }
     
-    private $errors = [];
-}
+    public function delete($id) {
+        if (!$this->hasPermission('admin')) {
+            $this->json(['success' => false, 'message' => 'No tienes permisos para realizar esta acción'], 403);
+            return;
+        }
+        
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            $this->json(['success' => false, 'message' => 'Método no permitido'], 405);
+            return;
+        }
+        
+        try {
+            $producto = $this->productoModel->find($id);
+            if (!$producto) {
+                $this->json(['success' => false, 'message' => 'Producto no encontrado'], 404);
+                return;
+            }
+            
+            // En lugar de eliminar, marcar como inactivo
+            $this->productoModel->update($id, ['activo' => 0]);
+            $this->json(['success' => true, 'message' => 'Producto desactivado correctamente']);
+        } catch (Exception $e) {
+            $this->json(['success' => false, 'message' => 'Error al eliminar el producto: ' . $e->getMessage()], 500);
+        }
+    }
+    
+    public function activar($id) {
+        if (!$this->hasPermission('admin')) {
+            $this->json(['success' => false, 'message' => 'No tienes permisos para realizar esta acción'], 403);
+            return;
+        }
+        
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            $this->json(['success' => false, 'message' => 'Método no permitido'], 405);
+            return;
+        }
+        
+        try {
+            $producto = $this->productoModel->find($id);
+            if (!$producto) {
+                $this->json(['success' => false, 'message' => 'Producto no encontrado'], 404);
+                return;
+            }
+            
+            $this->productoModel->update($id, ['activo' => 1]);
+            $this->json(['success' => true, 'message' => 'Producto activado correctamente']);
+        } catch (Exception $e) {
+            $this->json(['success' => false, 'message' => 'Error al activar el producto: ' . $e->getMessage()], 500);
+        }
+    }
+    
+    public function actualizarInventario($id) {
+        if (!$this->hasPermission('admin')) {
+            $this->flash('error', 'No tienes permisos para realizar esta acción');
+            $this->redirect('productos');
+            return;
+        }
+        
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            $this->json(['success' => false, 'message' => 'Método no permitido'], 405);
+            return;
+        }
+        
+        try {
+            $stock_actual = $_POST['stock_actual'] ?? 0;
+            $lote = $_POST['lote'] ?? null;
+            $fecha_vencimiento = $_POST['fecha_vencimiento'] ?? null;
+            
+            $this->productoModel->actualizarInventario($id, $stock_actual, $lote, $fecha_vencimiento);
+            $this->json(['success' => true, 'message' => 'Inventario actualizado correctamente']);
+        } catch (Exception $e) {
+            $this->json(['success' => false, 'message' => 'Error al actualizar inventario: ' . $e->getMessage()], 500);
+        }
+    }
+    
+    public function alertas() {
+        $alertas = $this->productoModel->getAlertasInventario();
+        
+        $this->view('productos/alertas', [
+            'title' => 'Alertas de Inventario',
+            'alertas' => $alertas,
+            'flashMessages' => $this->getFlashMessages()
+        ]);
+    }
+    
+    public function inventario() {
+        $categoria = $_GET['categoria'] ?? '';
+        $search = $_GET['search'] ?? '';
+        
+        $conditions = [];
+        if ($categoria) {
+            $conditions['categoria'] = $categoria;
+        }
+        
+        if ($search) {
+            $productos = $this->productoModel->searchProductos($search);
+        } else {
+            $productos = $this->productoModel->getProductosConInventario($conditions);
+        }
+        
+        $categorias = $this->productoModel->getCategorias();
+        
+        $this->view('productos/inventario', [
+            'title' => 'Gestión de Inventario',
+            'productos' => $productos,
+            'categorias' => $categorias,
+            'currentFilters' => [
+                'categoria' => $categoria,
+                'search' => $search
+            ],
+            'flashMessages' => $this->getFlashMessages()
+        ]);
+    }
+    
+    public function exportar() {
+        if (!$this->hasPermission('admin')) {
+            $this->flash('error', 'No tienes permisos para realizar esta acción');
+            $this->redirect('productos');
+            return;
+        }
+        
+        $productos = $this->productoModel->getProductosConInventario();
+        
+        // Generar CSV
+        header('Content-Type: text/csv');
+        header('Content-Disposition: attachment; filename="productos_' . date('Y-m-d') . '.csv"');
+        
+        $output = fopen('php://output', 'w');
+        
+        // Encabezados
+        fputcsv($output, [
+            'SKU', 'Nombre', 'Descripción', 'Categoría', 'Marca', 
+            'Precio Base', 'Precio Público', 'Stock Actual', 'Stock Mínimo',
+            'Fecha Vencimiento', 'Lote', 'Estado'
+        ]);
+        
+        // Datos
+        foreach ($productos as $producto) {
+            fputcsv($output, [
+                $producto['sku'],
+                $producto['nombre'],
+                $producto['descripcion'],
+                $producto['categoria'],
+                $producto['marca'],
+                $producto['precio_base'],
+                $producto['precio_publico'],
+                $producto['stock_actual'] ?? 0,
+                $producto['stock_minimo'],
+                $producto['fecha_vencimiento'],
+                $producto['lote'],
+                $producto['estado_stock'] ?? 'normal'
+            ]);
+        }
+        
+        fclose($output);
+    }
 ?>

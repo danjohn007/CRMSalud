@@ -62,6 +62,14 @@ class Producto extends BaseModel {
         return array_column($result, 'categoria');
     }
     
+    public function getMarcas() {
+        $sql = "SELECT DISTINCT marca FROM {$this->table} 
+                WHERE activo = 1 AND marca IS NOT NULL 
+                ORDER BY marca ASC";
+        $result = $this->db->fetchAll($sql);
+        return array_column($result, 'marca');
+    }
+    
     public function getFamilias() {
         $sql = "SELECT DISTINCT familia FROM {$this->table} 
                 WHERE activo = 1 AND familia IS NOT NULL 

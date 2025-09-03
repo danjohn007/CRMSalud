@@ -271,5 +271,49 @@ class Cotizacion extends BaseModel {
         // Simular envío exitoso
         return true;
     }
+    
+    public function cambiarEstado($cotizacion_id, $nuevo_estado) {
+        // Validar que el estado sea válido
+        $estados_validos = ['borrador', 'enviada', 'aceptada', 'rechazada', 'vencida'];
+        if (!in_array($nuevo_estado, $estados_validos)) {
+            throw new Exception('Estado no válido');
+        }
+        
+        $cotizacion = $this->find($cotizacion_id);
+        if (!$cotizacion) {
+            throw new Exception('Cotización no encontrada');
+        }
+        
+        $estado_actual = $cotizacion['estado'];
+        
+        // Validar transiciones de estado válidas
+        $transiciones_validas = [
+            'borrador' => ['enviada', 'vencida'],
+            'enviada' => ['aceptada', 'rechazada', 'vencida'],
+            'aceptada' => [], // Estado final
+            'rechazada' => [], // Estado final  
+            'vencida' => [] // Estado final
+        ];
+        
+        if (!in_array($nuevo_estado, $transiciones_validas[$estado_actual]) && $estado_actual !== $nuevo_estado) {
+            throw new Exception("No se puede cambiar de estado '$estado_actual' a '$nuevo_estado'");
+        }
+        
+        // Actualizar estado
+        $data = ['estado' => $nuevo_estado];
+        
+        // Si se acepta la cotización, generar pedido automáticamente
+        if ($nuevo_estado === 'aceptada') {
+            try {
+                $pedido_id = $this->generarPedido($cotizacion_id);
+                $data['pedido_generado'] = $pedido_id;
+            } catch (Exception $e) {
+                // Log error but don't fail the state change
+                error_log("Error generando pedido para cotización $cotizacion_id: " . $e->getMessage());
+            }
+        }
+        
+        return $this->update($cotizacion_id, $data);
+    }
 }
 ?>

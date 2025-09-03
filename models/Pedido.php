@@ -320,5 +320,62 @@ class Pedido extends BaseModel {
         
         return true;
     }
+    
+    public function cambiarEstado($pedido_id, $nuevo_estado) {
+        // Validar que el estado sea válido
+        $estados_validos = ['nuevo', 'confirmado', 'preparando', 'enviado', 'entregado', 'cancelado'];
+        if (!in_array($nuevo_estado, $estados_validos)) {
+            throw new Exception('Estado no válido');
+        }
+        
+        $pedido = $this->find($pedido_id);
+        if (!$pedido) {
+            throw new Exception('Pedido no encontrado');
+        }
+        
+        $estado_actual = $pedido['estado'];
+        
+        // Validar transiciones de estado válidas
+        $transiciones_validas = [
+            'nuevo' => ['confirmado', 'cancelado'],
+            'confirmado' => ['preparando', 'cancelado'],
+            'preparando' => ['enviado', 'cancelado'],
+            'enviado' => ['entregado'],
+            'entregado' => [], // Estado final
+            'cancelado' => [] // Estado final
+        ];
+        
+        if (!in_array($nuevo_estado, $transiciones_validas[$estado_actual]) && $estado_actual !== $nuevo_estado) {
+            throw new Exception("No se puede cambiar de estado '$estado_actual' a '$nuevo_estado'");
+        }
+        
+        // Actualizar estado
+        $data = ['estado' => $nuevo_estado];
+        
+        // Agregar fechas automáticas según el estado
+        if ($nuevo_estado === 'entregado') {
+            $data['fecha_entrega_real'] = date('Y-m-d');
+        }
+        
+        // Actualizar el pedido
+        $resultado = $this->update($pedido_id, $data);
+        
+        // Enviar notificación automática
+        if ($resultado) {
+            try {
+                $this->enviarNotificacion($pedido_id, $nuevo_estado);
+            } catch (Exception $e) {
+                // Log error but don't fail the state change
+                error_log("Error enviando notificación para pedido $pedido_id: " . $e->getMessage());
+            }
+            
+            // Si se marca como entregado, verificar entrega completa
+            if ($nuevo_estado === 'entregado') {
+                $this->verificarEntregaCompleta($pedido_id);
+            }
+        }
+        
+        return $resultado;
+    }
 }
 ?>

@@ -22,6 +22,9 @@ CREATE TABLE `usuarios` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `nombre` varchar(100) NOT NULL,
   `email` varchar(100) NOT NULL,
+  `telefono` varchar(20) NULL,
+  `direccion` text NULL,
+  `profile_image` varchar(255) NULL,
   `password` varchar(255) NOT NULL,
   `rol` enum('admin','vendedor','marketing','inventarios') NOT NULL DEFAULT 'vendedor',
   `activo` tinyint(1) NOT NULL DEFAULT 1,
@@ -29,7 +32,8 @@ CREATE TABLE `usuarios` (
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
   `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   PRIMARY KEY (`id`),
-  UNIQUE KEY `email` (`email`)
+  UNIQUE KEY `email` (`email`),
+  KEY `idx_telefono` (`telefono`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- ======================================

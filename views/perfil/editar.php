@@ -14,7 +14,7 @@
                 <h5 class="card-title mb-0">Información Personal</h5>
             </div>
             <div class="card-body">
-                <form method="POST" action="<?php echo $baseUrl; ?>perfil/actualizar">
+                <form method="POST" action="<?php echo $baseUrl; ?>perfil/actualizar" enctype="multipart/form-data">
                     <div class="mb-3">
                         <label for="nombre" class="form-label">Nombre Completo</label>
                         <input type="text" class="form-control" id="nombre" name="nombre" 
@@ -25,6 +25,33 @@
                         <label for="email" class="form-label">Email</label>
                         <input type="email" class="form-control" id="email" name="email" 
                                value="<?php echo htmlspecialchars($currentUser['email']); ?>" required>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="telefono" class="form-label">Teléfono (opcional)</label>
+                        <input type="tel" class="form-control" id="telefono" name="telefono" 
+                               value="<?php echo htmlspecialchars($currentUser['telefono'] ?? ''); ?>">
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="direccion" class="form-label">Dirección (opcional)</label>
+                        <textarea class="form-control" id="direccion" name="direccion" rows="3"><?php echo htmlspecialchars($currentUser['direccion'] ?? ''); ?></textarea>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="imagen_perfil" class="form-label">Imagen de Perfil (opcional)</label>
+                        <input type="file" class="form-control" id="imagen_perfil" name="imagen_perfil" 
+                               accept="image/jpeg,image/png,image/gif"
+                               data-max-size="<?php echo MAX_UPLOAD_SIZE; ?>"
+                               data-allowed-types="image/jpeg,image/png,image/gif">
+                        <div class="form-text">Formatos permitidos: JPG, PNG, GIF. Tamaño máximo: <?php echo MAX_UPLOAD_SIZE / 1024 / 1024; ?>MB</div>
+                        <?php if (!empty($currentUser['imagen_perfil'])): ?>
+                            <div class="mt-2">
+                                <small class="text-muted">Imagen actual:</small><br>
+                                <img src="<?php echo BASE_URL; ?>uploads/profiles/<?php echo htmlspecialchars($currentUser['imagen_perfil']); ?>" 
+                                     alt="Imagen de perfil actual" class="img-thumbnail" style="max-width: 150px; max-height: 150px;">
+                            </div>
+                        <?php endif; ?>
                     </div>
                     
                     <div class="mb-3">
@@ -45,7 +72,8 @@
                     
                     <div class="mb-3">
                         <label for="password_nueva" class="form-label">Nueva Contraseña</label>
-                        <input type="password" class="form-control" id="password_nueva" name="password_nueva">
+                        <input type="password" class="form-control" id="password_nueva" name="password_nueva" minlength="6">
+                        <div class="form-text">Mínimo 6 caracteres</div>
                     </div>
                     
                     <div class="mb-3">

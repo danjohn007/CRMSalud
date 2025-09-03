@@ -17,8 +17,10 @@ class Cliente extends BaseModel {
         $params = [];
         
         if (!empty($search)) {
-            $sql .= " AND (nombre LIKE :search OR email LIKE :search OR telefono LIKE :search)";
-            $params['search'] = "%{$search}%";
+            $sql .= " AND (nombre LIKE :search1 OR email LIKE :search2 OR telefono LIKE :search3)";
+            $params['search1'] = "%{$search}%";
+            $params['search2'] = "%{$search}%";
+            $params['search3'] = "%{$search}%";
         }
         
         if ($tipo) {

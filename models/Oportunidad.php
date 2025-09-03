@@ -93,7 +93,7 @@ class Oportunidad extends BaseModel {
         $sql = "SELECT c.*, u.nombre as usuario_nombre
                 FROM comunicaciones c
                 LEFT JOIN usuarios u ON c.usuario_id = u.id
-                LEFT JOIN oportunidades o ON c.cliente_id = o.cliente_id
+                INNER JOIN oportunidades o ON c.cliente_id = o.cliente_id
                 WHERE o.id = :oportunidad_id
                 ORDER BY c.fecha_comunicacion DESC";
         return $this->db->fetchAll($sql, ['oportunidad_id' => $oportunidad_id]);
@@ -103,7 +103,7 @@ class Oportunidad extends BaseModel {
         $sql = "SELECT a.*, u.nombre as usuario_nombre
                 FROM actividades_calendario a
                 LEFT JOIN usuarios u ON a.usuario_id = u.id
-                LEFT JOIN oportunidades o ON a.cliente_id = o.cliente_id
+                INNER JOIN oportunidades o ON a.cliente_id = o.cliente_id
                 WHERE o.id = :oportunidad_id
                 ORDER BY a.fecha_inicio DESC";
         return $this->db->fetchAll($sql, ['oportunidad_id' => $oportunidad_id]);

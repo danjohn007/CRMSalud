@@ -65,6 +65,33 @@ define('OPORTUNIDAD_ESTADOS', [
     'perdido' => 'Perdido'
 ]);
 
+// Estados de cotizaciones
+define('COTIZACION_ESTADOS', [
+    'borrador' => 'Borrador',
+    'enviada' => 'Enviada',
+    'aceptada' => 'Aceptada',
+    'rechazada' => 'Rechazada',
+    'vencida' => 'Vencida'
+]);
+
+// Estados de pedidos
+define('PEDIDO_ESTADOS', [
+    'nuevo' => 'Nuevo',
+    'confirmado' => 'Confirmado',
+    'preparando' => 'Preparando',
+    'enviado' => 'Enviado',
+    'entregado' => 'Entregado',
+    'cancelado' => 'Cancelado'
+]);
+
+// Formas de pago
+define('FORMAS_PAGO', [
+    'efectivo' => 'Efectivo',
+    'transferencia' => 'Transferencia',
+    'cheque' => 'Cheque',
+    'credito' => 'Crédito'
+]);
+
 // Tipos de cliente
 define('TIPOS_CLIENTE', [
     'doctor' => 'Doctor',

@@ -40,7 +40,12 @@
                                 <label for="cliente_id" class="form-label">Cliente *</label>
                                 <select class="form-select" id="cliente_id" name="cliente_id" required>
                                     <option value="">Seleccionar cliente...</option>
-                                    <!-- Options will be populated via AJAX or server-side -->
+                                    <?php foreach ($clientes as $cliente): ?>
+                                        <option value="<?php echo $cliente['id']; ?>">
+                                            <?php echo htmlspecialchars($cliente['nombre']); ?> 
+                                            (<?php echo ucfirst($cliente['tipo']); ?>)
+                                        </option>
+                                    <?php endforeach; ?>
                                 </select>
                             </div>
                         </div>
@@ -49,14 +54,16 @@
                     <div class="row">
                         <div class="col-md-4">
                             <div class="mb-3">
-                                <label for="valor_estimado" class="form-label">Valor Estimado</label>
-                                <input type="number" class="form-control" id="valor_estimado" name="valor_estimado" step="0.01">
+                                <label for="valor_estimado" class="form-label">Valor Estimado ($)</label>
+                                <input type="number" class="form-control" id="valor_estimado" name="valor_estimado" 
+                                       step="0.01" min="0" value="0">
                             </div>
                         </div>
                         <div class="col-md-4">
                             <div class="mb-3">
                                 <label for="probabilidad" class="form-label">Probabilidad (%)</label>
-                                <input type="number" class="form-control" id="probabilidad" name="probabilidad" min="0" max="100">
+                                <input type="number" class="form-control" id="probabilidad" name="probabilidad" 
+                                       min="0" max="100" value="0">
                             </div>
                         </div>
                         <div class="col-md-4">
@@ -69,6 +76,18 @@
                     
                     <div class="row">
                         <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="usuario_id" class="form-label">Responsable</label>
+                                <select class="form-select" id="usuario_id" name="usuario_id">
+                                    <?php foreach ($usuarios as $usuario): ?>
+                                        <option value="<?php echo $usuario['id']; ?>" 
+                                                <?php echo ($usuario['id'] == $currentUser['id']) ? 'selected' : ''; ?>>
+                                            <?php echo htmlspecialchars($usuario['nombre']); ?>
+                                        </option>
+                                    <?php endforeach; ?>
+                                </select>
+                            </div>
+                        </div>
                             <div class="mb-3">
                                 <label for="estado" class="form-label">Estado *</label>
                                 <select class="form-select" id="estado" name="estado" required>

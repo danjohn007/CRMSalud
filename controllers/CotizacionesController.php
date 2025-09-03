@@ -4,6 +4,11 @@
  */
 
 require_once 'core/BaseController.php';
+require_once 'models/Cotizacion.php';
+require_once 'models/Cliente.php';
+require_once 'models/User.php';
+require_once 'models/Oportunidad.php';
+require_once 'models/Producto.php';
 
 class CotizacionesController extends BaseController {
     private $cotizacionModel;

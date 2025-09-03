@@ -320,5 +320,61 @@ class Pedido extends BaseModel {
         
         return true;
     }
+    
+    public function cambiarEstado($pedido_id, $nuevo_estado) {
+        $estadosValidos = ['nuevo', 'confirmado', 'preparando', 'enviado', 'entregado', 'cancelado'];
+        
+        if (!in_array($nuevo_estado, $estadosValidos)) {
+            throw new Exception('Estado no válido');
+        }
+        
+        $pedido = $this->find($pedido_id);
+        if (!$pedido) {
+            throw new Exception('Pedido no encontrado');
+        }
+        
+        // Lógica de negocio para cambios de estado
+        $estadoActual = $pedido['estado'];
+        
+        // Validar transiciones de estado permitidas
+        $transicionesPermitidas = [
+            'nuevo' => ['confirmado', 'cancelado'],
+            'confirmado' => ['preparando', 'cancelado'],
+            'preparando' => ['enviado', 'cancelado'],
+            'enviado' => ['entregado'],
+            'entregado' => [], // Estado final
+            'cancelado' => [] // Estado final
+        ];
+        
+        if (!empty($transicionesPermitidas[$estadoActual]) && 
+            !in_array($nuevo_estado, $transicionesPermitidas[$estadoActual])) {
+            throw new Exception("No se puede cambiar de '$estadoActual' a '$nuevo_estado'");
+        }
+        
+        $updateData = ['estado' => $nuevo_estado];
+        
+        // Actualizar fechas según el estado
+        if ($nuevo_estado === 'entregado') {
+            $updateData['fecha_entrega_real'] = date('Y-m-d');
+        }
+        
+        // Actualizar el pedido
+        $this->update($pedido_id, $updateData);
+        
+        // Enviar notificación según el estado
+        switch ($nuevo_estado) {
+            case 'confirmado':
+                $this->enviarNotificacion($pedido_id, 'confirmacion');
+                break;
+            case 'enviado':
+                $this->enviarNotificacion($pedido_id, 'envio');
+                break;
+            case 'entregado':
+                $this->enviarNotificacion($pedido_id, 'entrega');
+                break;
+        }
+        
+        return true;
+    }
 }
 ?>

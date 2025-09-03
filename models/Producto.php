@@ -11,9 +11,14 @@ class Producto extends BaseModel {
     public function searchProductos($search) {
         $sql = "SELECT * FROM {$this->table} 
                 WHERE activo = 1 
-                AND (nombre LIKE :search OR sku LIKE :search OR principio_activo LIKE :search)
+                AND (nombre LIKE :search_nombre OR sku LIKE :search_sku OR principio_activo LIKE :search_principio)
                 ORDER BY nombre ASC";
-        return $this->db->fetchAll($sql, ['search' => "%{$search}%"]);
+        $searchTerm = "%{$search}%";
+        return $this->db->fetchAll($sql, [
+            'search_nombre' => $searchTerm,
+            'search_sku' => $searchTerm,
+            'search_principio' => $searchTerm
+        ]);
     }
     
     public function getProductosByCategoria($categoria) {

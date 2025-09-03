@@ -379,4 +379,5 @@ class ProductosController extends BaseController {
         
         fclose($output);
     }
+}
 ?>

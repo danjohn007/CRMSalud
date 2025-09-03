@@ -66,13 +66,22 @@ class Database {
     
     public function update($table, $data, $where, $whereParams = []) {
         $setClause = [];
-        foreach (array_keys($data) as $column) {
-            $setClause[] = "{$column} = :{$column}";
+        $updateParams = [];
+        $counter = 1;
+        
+        // Create unique parameter names for SET clause to avoid conflicts
+        foreach ($data as $column => $value) {
+            $paramName = "set_param_{$counter}";
+            $setClause[] = "{$column} = :{$paramName}";
+            $updateParams[$paramName] = $value;
+            $counter++;
         }
         $setClause = implode(', ', $setClause);
         
         $sql = "UPDATE {$table} SET {$setClause} WHERE {$where}";
-        $params = array_merge($data, $whereParams);
+        
+        // Merge parameters, whereParams should take precedence for WHERE clause
+        $params = array_merge($updateParams, $whereParams);
         
         return $this->query($sql, $params);
     }

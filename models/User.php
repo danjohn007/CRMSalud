@@ -42,6 +42,39 @@ class User extends BaseModel {
         return $this->update($userId, ['password' => $hashedPassword]);
     }
     
+    public function changePassword($userId, $currentPassword, $newPassword) {
+        // Verify current password
+        $user = $this->find($userId);
+        if (!$user || !password_verify($currentPassword, $user['password'])) {
+            throw new Exception('La contraseña actual es incorrecta');
+        }
+        
+        // Update to new password
+        return $this->updatePassword($userId, $newPassword);
+    }
+    
+    public function updateProfile($userId, $data) {
+        // Filter allowed fields for profile update
+        $allowedFields = ['nombre', 'email', 'telefono', 'direccion', 'profile_image'];
+        $updateData = [];
+        
+        foreach ($allowedFields as $field) {
+            if (isset($data[$field])) {
+                $updateData[$field] = $data[$field];
+            }
+        }
+        
+        // Validate email uniqueness if changed
+        if (isset($updateData['email'])) {
+            $existingUser = $this->findByEmail($updateData['email']);
+            if ($existingUser && $existingUser['id'] != $userId) {
+                throw new Exception('El email ya está registrado por otro usuario');
+            }
+        }
+        
+        return $this->update($userId, $updateData);
+    }
+    
     public function getActiveUsers() {
         return $this->findAll(['activo' => 1], 'nombre ASC');
     }

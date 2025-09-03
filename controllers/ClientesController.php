@@ -144,6 +144,30 @@ class ClientesController extends BaseController {
         $this->redirect('clientes');
     }
     
+    public function cambiarEstatus($id) {
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            $this->redirect('clientes');
+        }
+        
+        $cliente = $this->clienteModel->find($id);
+        if (!$cliente) {
+            $this->flash('error', 'Cliente no encontrado');
+            $this->redirect('clientes');
+        }
+        
+        try {
+            $nuevoEstatus = $cliente['activo'] ? 0 : 1;
+            $this->clienteModel->update($id, ['activo' => $nuevoEstatus]);
+            
+            $mensaje = $nuevoEstatus ? 'Cliente activado exitosamente' : 'Cliente desactivado exitosamente';
+            $this->flash('success', $mensaje);
+        } catch (Exception $e) {
+            $this->flash('error', 'Error al cambiar estatus: ' . $e->getMessage());
+        }
+        
+        $this->redirect('clientes');
+    }
+    
     private function validateClienteData($data) {
         $this->errors = [];
         $validatedData = [];

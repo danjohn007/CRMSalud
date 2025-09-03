@@ -14,7 +14,7 @@
                 <h5 class="card-title mb-0">Información Personal</h5>
             </div>
             <div class="card-body">
-                <form method="POST" action="<?php echo $baseUrl; ?>perfil/actualizar">
+                <form method="POST" action="<?php echo $baseUrl; ?>perfil/actualizar" enctype="multipart/form-data">
                     <div class="mb-3">
                         <label for="nombre" class="form-label">Nombre Completo</label>
                         <input type="text" class="form-control" id="nombre" name="nombre" 
@@ -25,6 +25,35 @@
                         <label for="email" class="form-label">Email</label>
                         <input type="email" class="form-control" id="email" name="email" 
                                value="<?php echo htmlspecialchars($currentUser['email']); ?>" required>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="telefono" class="form-label">Teléfono (opcional)</label>
+                        <input type="tel" class="form-control" id="telefono" name="telefono" 
+                               value="<?php echo htmlspecialchars($currentUser['telefono'] ?? ''); ?>" 
+                               placeholder="Ej: 555-123-4567">
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="direccion" class="form-label">Dirección (opcional)</label>
+                        <textarea class="form-control" id="direccion" name="direccion" rows="3" 
+                                  placeholder="Ingresa tu dirección completa"><?php echo htmlspecialchars($currentUser['direccion'] ?? ''); ?></textarea>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="profile_image" class="form-label">Imagen de Perfil (opcional)</label>
+                        <?php if (!empty($currentUser['profile_image']) && file_exists($currentUser['profile_image'])): ?>
+                            <div class="mb-2">
+                                <img src="<?php echo $baseUrl . $currentUser['profile_image']; ?>" 
+                                     alt="Imagen actual" class="img-thumbnail" style="max-width: 150px; max-height: 150px;">
+                                <small class="d-block text-muted">Imagen actual</small>
+                            </div>
+                        <?php endif; ?>
+                        <input type="file" class="form-control" id="profile_image" name="profile_image" 
+                               accept="image/jpeg,image/png,image/gif" 
+                               data-max-size="5242880" 
+                               data-allowed-types="image/jpeg,image/png,image/gif">
+                        <div class="form-text">Tamaño máximo: 5MB. Formatos: JPEG, PNG, GIF</div>
                     </div>
                     
                     <div class="mb-3">

@@ -16,8 +16,8 @@ define('APP_VERSION', '1.0.0');
 
 // Detectar automáticamente la URL base
 $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https://' : 'http://';
-$host = $_SERVER['HTTP_HOST'];
-$script = $_SERVER['SCRIPT_NAME'];
+$host = $_SERVER['HTTP_HOST'] ?? 'localhost';
+$script = $_SERVER['SCRIPT_NAME'] ?? '/index.php';
 $path = dirname($script);
 $path = ($path === '/') ? '' : $path;
 
@@ -31,9 +31,9 @@ define('UPLOADS_PATH', ROOT_PATH . 'uploads/');
 
 // Configuración de base de datos
 define('DB_HOST', 'localhost');
-define('DB_NAME', 'ejercito_crm');
-define('DB_USER', 'ejercito_crm');
-define('DB_PASS', 'Danjohn007!');
+define('DB_NAME', 'crm_salud');
+define('DB_USER', 'root');
+define('DB_PASS', '');
 define('DB_CHARSET', 'utf8mb4');
 
 // Configuración de sesiones (solo si no hay sesión activa)

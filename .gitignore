@@ -1,0 +1,47 @@
+# Archivos de configuración local
+config/local.php
+.env
+
+# Uploads y archivos generados por usuarios
+uploads/*
+!uploads/.gitkeep
+!uploads/profiles/
+uploads/profiles/*
+!uploads/profiles/.gitkeep
+
+# Logs
+*.log
+logs/
+tmp/
+temp/
+
+# Archivos del sistema
+.DS_Store
+Thumbs.db
+.htaccess.local
+
+# Cache
+cache/
+*.cache
+
+# Backups
+backup/
+*.backup
+*.sql.bak
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Composer (si se usa en el futuro)
+vendor/
+composer.lock
+
+# NPM (si se usa en el futuro)
+node_modules/
+package-lock.json
+
+# Archivos temporales de testing
+/tmp/test_*.php
